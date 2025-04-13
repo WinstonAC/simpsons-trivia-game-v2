@@ -1,0 +1,329 @@
+/* Mobile-first base styles */
+.game-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../Images/background_livingroom.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+/* Main question container */
+.question-container {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #00ff00;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 4rem; /* Space for TV */
+}
+
+.question-text {
+  color: #00ff00;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 0 0 10px #00ff00;
+  line-height: 1.4;
+}
+
+.options-container {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.option {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid #00ff00;
+  border-radius: 10px;
+  padding: 0.8rem;
+  color: #00ff00;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  transition: all 0.3s ease;
+}
+
+.option:hover {
+  background: rgba(0, 255, 0, 0.2);
+  transform: scale(1.02);
+}
+
+.option.correct {
+  background: rgba(0, 255, 0, 0.3);
+  border-color: #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  pointer-events: none;
+}
+
+.option.disabled {
+  pointer-events: none;
+}
+
+.option:not(.disabled):hover {
+  background: rgba(0, 255, 0, 0.2);
+  transform: scale(1.02);
+}
+
+/* Score TV styles */
+.score-display {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 150px; /* Smaller on mobile */
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-tv-frame {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+}
+
+.score-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85px; /* Slightly wider to accommodate left alignment */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px; /* Add padding to move text away from the left edge */
+}
+
+.score-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Changed from center to flex-start for left alignment */
+  justify-content: center;
+  gap: 2px;
+}
+
+.player-name,
+.score-value {
+  color: #00ff00;
+  font-size: 8px;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 0 0 4px #00ff00;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left; /* Changed from center to left */
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove any potential inherited margins/padding */
+.score-inner > * {
+  margin: 0;
+  padding: 0;
+}
+
+/* Game Over/Win screens */
+.game-over,
+.game-won {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.game-over-content,
+.game-won-content {
+  text-align: center;
+  color: #00ff00;
+  font-family: 'Press Start 2P', monospace;
+  width: 90%;
+  max-width: 500px;
+}
+
+.game-over-content h1 {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  animation: pulse 2s infinite;
+}
+
+.game-over-content p {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.game-over-content button {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background: #00ff00;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  transition: all 0.3s ease;
+}
+
+.game-over-content button:hover {
+  transform: scale(1.1);
+  background: #00cc00;
+}
+
+.difficulty-indicator {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background: rgba(0, 255, 0, 0.2);
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.loading {
+  color: #00ff00;
+  font-size: 2rem;
+  font-family: 'Press Start 2P', monospace;
+  text-align: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  border: 2px solid #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.game-won-content h1 {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  animation: bounce 2s infinite;
+}
+
+.game-info {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progress-indicator {
+  padding: 10px 20px;
+  background: rgba(0, 255, 0, 0.2);
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  border-radius: 5px;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Tablet (768px) */
+@media (min-width: 768px) {
+  .question-container {
+    padding: 2rem;
+  }
+
+  .question-text {
+    font-size: 1.5rem;
+  }
+
+  .option {
+    font-size: 1.2rem;
+    padding: 1rem;
+  }
+
+  .score-display {
+    width: 180px;
+    height: 180px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .score-content {
+    width: 100px;
+    height: 60px;
+  }
+
+  .player-name,
+  .score-value {
+    font-size: 9px;
+  }
+}
+
+/* Desktop (1024px) */
+@media (min-width: 1024px) {
+  .question-container {
+    padding: 2.5rem;
+  }
+
+  .question-text {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .options-container {
+    gap: 1rem;
+  }
+
+  .option {
+    font-size: 1.4rem;
+    padding: 1.2rem;
+  }
+
+  .score-display {
+    width: 200px;
+    height: 200px;
+    bottom: 30px;
+    right: 30px;
+  }
+
+  .score-content {
+    width: 120px;
+    height: 70px;
+  }
+
+  .player-name,
+  .score-value {
+    font-size: 10px;
+  }
+}
+
+/* Add this to the head of your HTML file to import the font */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); 

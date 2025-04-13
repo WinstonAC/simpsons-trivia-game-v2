@@ -1,67 +1,41 @@
 import React, { useState } from 'react';
-import './App.css';
-import TV from './components/TV';
 import LandingPage from './components/LandingPage';
+import GameScreen from './components/GameScreen';
+import { triviaQuestions } from './data/questions';
 
-const triviaQuestions = [
-  {
-    question: "What is Homer's favorite beer?",
-    options: ["Duff", "Buzz Cola", "Flaming Moe's", "Fudd"],
-    correctAnswer: "Duff"
-  },
-  {
-    question: "What is the name of Bart's best friend?",
-    options: ["Milhouse", "Nelson", "Martin", "Ralph"],
-    correctAnswer: "Milhouse"
-  }
-];
-
-function App() {
+const App = () => {
+  const [gameStarted, setGameStarted] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
 
-  const handleEnter = (name) => {
+  const handleGameStart = (name) => {
     setPlayerName(name);
     setGameStarted(true);
   };
 
-  const handleAnswer = (selectedOption) => {
-    const currentQuestion = triviaQuestions[currentQuestionIndex];
-    const isCorrect = selectedOption === currentQuestion.correctAnswer;
-
-    // Play sound (we'll add this next)
-    // const sound = new Audio(isCorrect ? cowabungaSound : dohSound);
-    // sound.play().catch(error => console.log('Error playing sound:', error));
-
-    if (isCorrect) {
-      setScore(score + 1);
+  const handleAnswer = (selectedAnswer) => {
+    if (selectedAnswer === triviaQuestions[currentQuestionIndex].correctAnswer) {
+      setScore(prevScore => prevScore + 1);
     }
-
-    setCurrentQuestionIndex((prevIndex) => 
-      (prevIndex + 1) % triviaQuestions.length
-    );
+    setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
 
-  if (!gameStarted) {
-    return <LandingPage onEnter={handleEnter} />;
-  }
-
-  const currentQuestion = triviaQuestions[currentQuestionIndex];
-
   return (
-    <div className="app-container">
-      <div className="game-content">
-        <div className="score-display">Score: {score}</div>
-        <TV 
-          question={currentQuestion.question}
-          options={currentQuestion.options}
+    <div className="app">
+      {!gameStarted ? (
+        <LandingPage onEnter={handleGameStart} />
+      ) : (
+        <GameScreen
+          question={triviaQuestions[currentQuestionIndex].question}
+          options={triviaQuestions[currentQuestionIndex].options}
+          score={score}
+          playerName={playerName}
           onAnswerClick={handleAnswer}
         />
-      </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
