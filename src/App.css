@@ -1,38 +1,103 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  padding: 20px;
   min-height: 100vh;
+  background-color: #282c34;
+  color: #00ff00;
+  font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+h1 {
+  font-size: 3rem;
+  text-shadow: 0 0 10px #00ff00;
+  margin-bottom: 20px;
+}
+
+.score {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+.question-container {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 600px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.option-button {
+  background: #333;
+  color: #00ff00;
+  border: 2px solid #00ff00;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.option-button:hover {
+  background: #00ff00;
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00ff00;
+}
+
+.app-container {
+  min-height: 100vh;
+  background-image: url('./Images/background_livingroom.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.game-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.score-display {
+  font-size: 2.5rem;
+  color: #00ff00;
+  text-shadow: 
+    0 0 10px #00ff00,
+    0 0 20px #00ff00;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 10px;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .score-display {
+    font-size: 2rem;
   }
 }

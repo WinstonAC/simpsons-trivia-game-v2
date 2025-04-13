@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# 📺 Simpsons Trivia Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web and mobile trivia experience built with React, React Native, and nostalgia. This game is powered by Cursor, GitHub, and Vercel — designed to make coding fun, look amazing, and showcase hybrid PM/dev excellence.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🧠 About the Project
 
-### `npm start`
+This project was created by [William Campbell](#) as a passion project, dev portfolio piece, and experiment in joyful UI design. It's more than trivia — it's a playful, polished, and technically sound product with room to scale.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🎮 Features
 
-### `npm test`
+- 55+ classic Simpsons trivia questions
+- Responsive web build using React
+- Mobile version using React Native (iOS support)
+- Cursor-powered developer experience
+- Question display inside a retro-styled Simpsons TV UI
+- Shareable links to challenge friends
+- Replay and score tracking system
+- Cylon Digital branding in footer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🖌️ UI/UX Goals (In Progress)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This project will feature:
+- A retro Simpsons TV screen component to display trivia questions
+- A modern, high-quality background inspired by the show but reimagined for 2025 aesthetics
+- Custom typography and animations that mimic the show's iconic feel
+- Carefully selected visuals generated via ChatGPT tools and enhanced via Canva or Figma
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+💡 *The goal: a design that feels elevated, intentional, and straight out of a designer's dream.*
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🧑‍💻 Built With
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React (Web)
+- React Native (Mobile)
+- Cursor (Development)
+- Xcode (iOS build & testing)
+- GitHub (Version control)
+- Vercel (Deployment)
+- Notion (Product & roadmap planning)
+- Canva / Figma (UI Design assets)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🚀 Getting Started (Cursor + Local Dev)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Web
