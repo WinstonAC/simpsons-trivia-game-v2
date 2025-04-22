@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import './GameScreen.css';
 import tvImage from '../Images/TV.png';
 import { useGameEngine } from '../hooks/useGameEngine';
-import correctSound from '../sounds/correct.mp3';
-import incorrectSound from '../sounds/incorrect.mp3';
 import Timer from './Timer';
 
 const GameScreen = ({ playerName }) => {
@@ -23,9 +21,6 @@ const GameScreen = ({ playerName }) => {
   const currentQuestion = getCurrentQuestion();
   const progress = ((correctAnswers + totalIncorrect) / 10) * 100;
   const optionsRef = useRef([]);
-  const correctAudio = new Audio(correctSound);
-  const incorrectAudio = new Audio(incorrectSound);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Focus first option when question changes
@@ -37,7 +32,6 @@ const GameScreen = ({ playerName }) => {
   const handleTimeUp = () => {
     if (!isAnswerSelected) {
       handleAnswer(null);
-      incorrectAudio.play();
     }
   };
 
@@ -46,11 +40,6 @@ const GameScreen = ({ playerName }) => {
       e.preventDefault();
       if (!isAnswerSelected) {
         handleAnswer(option);
-        if (option === currentQuestion.correctAnswer) {
-          correctAudio.play();
-        } else {
-          incorrectAudio.play();
-        }
       }
     } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
       e.preventDefault();
@@ -62,14 +51,6 @@ const GameScreen = ({ playerName }) => {
       optionsRef.current[prevIndex].focus();
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="loading-overlay">
-        <div className="loading-spinner"></div>
-      </div>
-    );
-  }
 
   if (gameStatus === 'gameOver') {
     return (

@@ -20,10 +20,11 @@ export const useGameEngine = () => {
   const [gameStatus, setGameStatus] = useState('playing'); // 'playing', 'gameOver', 'won'
   const [totalScore, setTotalScore] = useState(0);
   const [isAnswerSelected, setIsAnswerSelected] = useState(false);
+  const [currentStreak, setCurrentStreak] = useState(0);
 
-  // Audio refs
-  const correctSound = useRef(new Audio('/src/assets/sounds/cowabunga.mp3'));
-  const incorrectSound = useRef(new Audio('/src/assets/sounds/doh.mp3'));
+  // Audio refs - update paths to match your assets directory
+  const correctSound = useRef(new Audio('/assets/sounds/cowabunga.mp3'));
+  const incorrectSound = useRef(new Audio('/assets/sounds/doh.mp3'));
 
   // Initialize and shuffle questions for each level
   useEffect(() => {
