@@ -7,28 +7,23 @@ const Tutorial = ({ onClose }) => {
   const tutorialSteps = [
     {
       title: "Welcome to Springfield Trivia!",
-      content: "D'oh! Ready to test your Simpsons knowledge? Let Lisa guide you through the basics!",
-      image: "/tutorial/lisa-welcome.png"
+      content: "D'oh! Ready to test your Simpsons knowledge? Let's guide you through the basics!"
     },
     {
       title: "Answer Questions",
-      content: "You have 30 seconds to answer each question. Choose wisely, or you'll be saying 'D'oh!'",
-      image: "/tutorial/timer-example.png"
+      content: "You have 30 seconds to answer each question. Choose wisely, or you'll be saying 'D'oh!'"
     },
     {
       title: "Build Your Streak",
-      content: "Answer correctly to build your streak. The longer your streak, the more points you'll earn!",
-      image: "/tutorial/streak-example.png"
+      content: "Answer correctly to build your streak. The longer your streak, the more points you'll earn!"
     },
     {
       title: "Level Up",
-      content: "Progress through levels to face harder questions. Even Comic Book Guy would be impressed!",
-      image: "/tutorial/level-example.png"
+      content: "Progress through levels to face harder questions. Even Comic Book Guy would be impressed!"
     },
     {
       title: "Controls",
-      content: "Use keyboard arrows or swipe on mobile to navigate. Press Enter or tap to select answers.",
-      image: "/tutorial/controls-example.png"
+      content: "Use keyboard arrows or swipe on mobile to navigate. Press Enter or tap to select answers."
     }
   ];
 
@@ -53,15 +48,6 @@ const Tutorial = ({ onClose }) => {
         
         <div className="tutorial-step">
           <h2>{tutorialSteps[currentStep].title}</h2>
-          <div className="tutorial-image">
-            <img 
-              src={tutorialSteps[currentStep].image} 
-              alt={tutorialSteps[currentStep].title}
-              onError={(e) => {
-                e.target.src = '/tutorial/placeholder.png';
-              }}
-            />
-          </div>
           <p>{tutorialSteps[currentStep].content}</p>
         </div>
 
