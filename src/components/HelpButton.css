@@ -1,0 +1,55 @@
+.help-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  font-size: 24px;
+  font-family: 'Press Start 2P', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 
+    0 0 10px rgba(0, 255, 0, 0.3),
+    inset 0 0 10px rgba(0, 255, 0, 0.2);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.help-button:hover {
+  transform: scale(1.1);
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.5),
+    inset 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+.help-icon {
+  font-size: 20px;
+  line-height: 1;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .help-button {
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+}
+
+/* Ensure the button stays visible in landscape mode */
+@media (orientation: landscape) and (max-height: 500px) {
+  .help-button {
+    top: 10px;
+    right: 10px;
+  }
+} 
