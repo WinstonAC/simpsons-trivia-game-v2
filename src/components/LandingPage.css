@@ -3,15 +3,17 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #FED41D; /* Simpsons yellow */
   overflow: hidden;
-  padding: 1rem;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .content-container {
@@ -160,13 +162,27 @@ form {
 /* Mobile optimizations */
 @media (max-width: 480px) {
   .landing-container {
-    padding: 0.5rem;
+    padding: max(env(safe-area-inset-top), 0.5rem) 
+            max(env(safe-area-inset-right), 0.5rem)
+            max(env(safe-area-inset-bottom), 0.5rem)
+            max(env(safe-area-inset-left), 0.5rem);
   }
 
   .content-container {
-    padding: 1.5rem;
-    width: 95%;
+    padding: 1.2rem;
+    width: 92%;
+    margin: 0 auto;
   }
+
+  .corner-donut {
+    width: 60px;
+    height: 60px;
+  }
+
+  .corner-donut.top-left { top: max(env(safe-area-inset-top), 10px); left: max(env(safe-area-inset-left), 10px); }
+  .corner-donut.top-right { top: max(env(safe-area-inset-top), 10px); right: max(env(safe-area-inset-right), 10px); }
+  .corner-donut.bottom-left { bottom: max(env(safe-area-inset-bottom), 10px); left: max(env(safe-area-inset-left), 10px); }
+  .corner-donut.bottom-right { bottom: max(env(safe-area-inset-bottom), 10px); right: max(env(safe-area-inset-right), 10px); }
 
   .name-input {
     padding: 0.8rem;

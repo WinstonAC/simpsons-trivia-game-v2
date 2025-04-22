@@ -1,3 +1,10 @@
+/* Update color variables */
+:root {
+  --primary-green: #1a9f1a;
+  --primary-green-glow: rgba(26, 159, 26, 0.5);
+  --primary-green-dim: rgba(26, 159, 26, 0.3);
+}
+
 /* Mobile-first base styles */
 .game-screen {
   position: fixed;
@@ -29,7 +36,7 @@
   right: 0;
   bottom: 0;
   border: 8px solid transparent;
-  background: linear-gradient(45deg, #00ff00, #00cc00, #00ff00) border-box;
+  background: linear-gradient(45deg, var(--primary-green), var(--primary-green-dim), var(--primary-green)) border-box;
   -webkit-mask: 
     linear-gradient(#fff 0 0) padding-box, 
     linear-gradient(#fff 0 0);
@@ -59,26 +66,27 @@
 
 /* Main question container - Mobile optimized */
 .question-container {
-  width: 95%;
-  max-width: 600px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #00ff00;
+  margin-top: 80px;
+  margin-bottom: 100px;
+  width: 92%;
+  max-width: 500px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--primary-green);
   border-radius: 15px;
   padding: 1rem;
-  margin-bottom: 2rem;
   animation: fadeIn 0.5s ease;
   box-shadow: 
-    0 0 20px rgba(0, 255, 0, 0.3),
-    inset 0 0 30px rgba(0, 255, 0, 0.1);
+    0 0 20px var(--primary-green-glow),
+    inset 0 0 30px var(--primary-green-dim);
 }
 
 .question-text {
-  color: #00ff00;
+  color: var(--primary-green);
   font-size: 1rem;
   text-align: center;
   margin-bottom: 1rem;
   font-family: 'Press Start 2P', monospace;
-  text-shadow: 0 0 10px #00ff00;
+  text-shadow: 0 0 10px var(--primary-green-glow);
   line-height: 1.4;
   animation: fadeIn 0.5s ease;
   padding: 0.5rem;
@@ -91,11 +99,11 @@
 }
 
 .option {
-  background: rgba(0, 0, 0, 0.6);
-  border: 2px solid #00ff00;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--primary-green);
   border-radius: 10px;
   padding: 1rem;
-  color: #00ff00;
+  color: var(--primary-green);
   font-size: 0.9rem;
   text-align: center;
   cursor: pointer;
@@ -114,11 +122,11 @@
 }
 
 .option:hover {
-  background: rgba(0, 255, 0, 0.2);
+  background: var(--primary-green-dim);
   transform: scale(1.02);
   box-shadow: 
-    0 0 15px rgba(0, 255, 0, 0.4),
-    inset 0 0 10px rgba(0, 255, 0, 0.2);
+    0 0 15px var(--primary-green-glow),
+    inset 0 0 10px var(--primary-green-dim);
 }
 
 .option.correct {
@@ -162,21 +170,15 @@
 /* Score display - Reduced size by 30% */
 .score-display {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
+  bottom: max(env(safe-area-inset-bottom), 10px);
+  right: max(env(safe-area-inset-right), 10px);
   background: rgba(0, 0, 0, 0.9);
-  border: 3px solid #00ff00;
-  border-radius: 10px;
-  padding: 7px;
-  box-shadow: 
-    0 0 15px rgba(0, 255, 0, 0.3),
-    inset 0 0 10px rgba(0, 255, 0, 0.2);
-  transform: scale(0.7);
+  border: 2px solid var(--primary-green);
+  border-radius: 8px;
+  padding: 8px;
+  transform: scale(0.8);
   transform-origin: bottom right;
+  z-index: 10;
 }
 
 .score-content {
@@ -188,12 +190,11 @@
 
 .player-name,
 .score-value {
-  color: #00ff00;
+  color: var(--primary-green);
   font-family: 'Press Start 2P', monospace;
-  text-shadow: 0 0 5px #00ff00;
+  font-size: 0.7rem;
+  text-shadow: 0 0 5px var(--primary-green-glow);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Mobile optimizations for score display */
@@ -238,43 +239,29 @@
 /* Mobile-optimized game info */
 .game-info {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: max(env(safe-area-inset-top), 10px);
+  left: max(env(safe-area-inset-left), 10px);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   z-index: 10;
+  transform: scale(0.9);
+  transform-origin: top left;
 }
 
 .difficulty-indicator,
 .streak-counter {
-  padding: 12px 20px;
+  padding: 8px 12px;
   background: rgba(0, 0, 0, 0.9);
-  border: 3px solid #00ff00;
-  color: #00ff00;
+  border: 2px solid var(--primary-green);
+  color: var(--primary-green);
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.9rem;
-  border-radius: 10px;
+  font-size: 0.8rem;
+  border-radius: 8px;
   box-shadow: 
-    0 0 15px rgba(0, 255, 0, 0.3),
-    inset 0 0 10px rgba(0, 255, 0, 0.2);
-  text-shadow: 0 0 10px #00ff00;
-  animation: glowBorder 2s infinite;
-}
-
-@keyframes glowBorder {
-  0%, 100% {
-    border-color: #00ff00;
-    box-shadow: 
-      0 0 15px rgba(0, 255, 0, 0.3),
-      inset 0 0 10px rgba(0, 255, 0, 0.2);
-  }
-  50% {
-    border-color: #00ff00;
-    box-shadow: 
-      0 0 25px rgba(0, 255, 0, 0.5),
-      inset 0 0 15px rgba(0, 255, 0, 0.3);
-  }
+    0 0 10px var(--primary-green-glow),
+    inset 0 0 8px var(--primary-green-dim);
+  text-shadow: 0 0 8px var(--primary-green-glow);
 }
 
 .progress-indicator {
@@ -663,8 +650,8 @@
 
 .exit-button {
   position: fixed;
-  top: 20px;
-  right: 100px;
+  top: max(env(safe-area-inset-top), 10px);
+  right: max(env(safe-area-inset-right), 100px);
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -710,5 +697,85 @@
   .exit-button {
     top: 10px;
     right: 80px;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .game-screen {
+    padding: max(env(safe-area-inset-top), 0.5rem) 
+            max(env(safe-area-inset-right), 0.5rem)
+            max(env(safe-area-inset-bottom), 0.5rem)
+            max(env(safe-area-inset-left), 0.5rem);
+  }
+
+  .question-container {
+    width: 92%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .question-text {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+
+  .option {
+    padding: 0.8rem;
+    font-size: 0.8rem;
+    min-height: 40px;
+  }
+}
+
+/* Control buttons positioning */
+.help-button,
+.sound-control {
+  transform: scale(0.85);
+}
+
+.help-button {
+  top: max(env(safe-area-inset-top), 10px);
+  right: max(env(safe-area-inset-right), 10px);
+}
+
+.sound-control {
+  top: max(env(safe-area-inset-top), 10px);
+  right: max(env(safe-area-inset-right), 55px);
+}
+
+/* Timer adjustments */
+.timer-container {
+  top: max(env(safe-area-inset-top), 10px);
+  right: max(env(safe-area-inset-right), 145px);
+  transform: scale(0.85);
+  transform-origin: top right;
+}
+
+/* Landscape mode optimizations */
+@media (orientation: landscape) and (max-height: 500px) {
+  .game-info {
+    transform: scale(0.8);
+  }
+
+  .score-display {
+    transform: scale(0.7);
+  }
+
+  .help-button,
+  .sound-control,
+  .exit-button,
+  .timer-container {
+    transform: scale(0.75);
+  }
+
+  .question-container {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+
+  .options-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 } 
