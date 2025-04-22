@@ -1,0 +1,56 @@
+.timer-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.timer-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.8);
+  border: 3px solid var(--timer-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.3),
+    inset 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.timer-circle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--timer-color) calc(var(--time-left) / var(--initial-time) * 100%),
+    transparent calc(var(--time-left) / var(--initial-time) * 100%)
+  );
+  mask: radial-gradient(transparent 55%, black 55%);
+  -webkit-mask: radial-gradient(transparent 55%, black 55%);
+}
+
+.timer-text {
+  color: var(--timer-color);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.2rem;
+  text-shadow: 0 0 5px var(--timer-color);
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .timer-circle {
+    width: 50px;
+    height: 50px;
+  }
+
+  .timer-text {
+    font-size: 1rem;
+  }
+} 

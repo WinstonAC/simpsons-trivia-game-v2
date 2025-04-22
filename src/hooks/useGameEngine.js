@@ -100,7 +100,20 @@ export const useGameEngine = () => {
     }
   };
 
-  const getCurrentQuestion = () => currentQuestions[currentQuestionIndex];
+  const getCurrentQuestion = () => {
+    const question = currentQuestions[currentQuestionIndex];
+    if (!question) return null;
+    
+    // Shuffle options but keep track of the correct answer
+    const correctAnswer = question.correctAnswer;
+    const shuffledOptions = shuffleArray([...question.options]);
+    
+    return {
+      ...question,
+      options: shuffledOptions,
+      correctAnswer // Keep the original correct answer
+    };
+  };
 
   const resetGame = () => {
     setCurrentLevel('easy');

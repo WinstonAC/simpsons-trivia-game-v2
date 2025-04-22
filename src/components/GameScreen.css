@@ -15,6 +15,41 @@
   background-repeat: no-repeat;
   overflow: hidden;
   padding: 1rem;
+  position: relative;
+}
+
+/* Add luxurious border */
+.game-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 4px solid transparent;
+  background: linear-gradient(45deg, #00ff00, #00cc00, #00ff00) border-box;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) padding-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: borderGlow 3s linear infinite;
+  z-index: 1;
+}
+
+@keyframes borderGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5),
+                inset 0 0 20px rgba(0, 255, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8),
+                inset 0 0 30px rgba(0, 255, 0, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5),
+                inset 0 0 20px rgba(0, 255, 0, 0.5);
+  }
 }
 
 /* Main question container */
@@ -26,6 +61,10 @@
   border-radius: 15px;
   padding: 1.5rem;
   margin-bottom: 4rem; /* Space for TV */
+  animation: fadeIn 0.5s ease;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.3),
+    inset 0 0 30px rgba(0, 255, 0, 0.1);
 }
 
 .question-text {
@@ -36,6 +75,7 @@
   font-family: 'Press Start 2P', monospace;
   text-shadow: 0 0 10px #00ff00;
   line-height: 1.4;
+  animation: fadeIn 0.5s ease;
 }
 
 .options-container {
@@ -54,39 +94,71 @@
   cursor: pointer;
   font-family: 'Press Start 2P', monospace;
   transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease;
 }
 
 .option:hover {
   background: rgba(0, 255, 0, 0.2);
   transform: scale(1.02);
+  box-shadow: 
+    0 0 15px rgba(0, 255, 0, 0.4),
+    inset 0 0 10px rgba(0, 255, 0, 0.2);
 }
 
 .option.correct {
   background: rgba(0, 255, 0, 0.3);
   border-color: #00ff00;
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-  pointer-events: none;
+  animation: correctAnswer 0.5s ease;
 }
 
 .option.disabled {
-  pointer-events: none;
+  opacity: 0.5;
+  transform: scale(0.98);
+  animation: incorrectAnswer 0.5s ease;
 }
 
-.option:not(.disabled):hover {
-  background: rgba(0, 255, 0, 0.2);
-  transform: scale(1.02);
+@keyframes correctAnswer {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
-/* Score TV styles */
+@keyframes incorrectAnswer {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced score display */
 .score-display {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
-  width: 150px; /* Smaller on mobile */
-  height: 150px;
+  bottom: 20px;
+  right: 20px;
+  width: 200px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+
+.score-display:hover {
+  transform: scale(1.05);
 }
 
 .score-tv-frame {
@@ -94,6 +166,7 @@
   height: 100%;
   object-fit: contain;
   position: relative;
+  filter: brightness(1.1) contrast(1.1);
 }
 
 .score-content {
@@ -101,42 +174,91 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 85px; /* Slightly wider to accommodate left alignment */
-  height: 50px;
+  width: 120px;
+  height: 70px;
   display: flex;
   align-items: center;
-  padding-left: 12px; /* Add padding to move text away from the left edge */
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  border: 2px solid #00ff00;
+  box-shadow: 
+    0 0 15px rgba(0, 255, 0, 0.3),
+    inset 0 0 10px rgba(0, 255, 0, 0.2);
 }
 
 .score-inner {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Changed from center to flex-start for left alignment */
+  align-items: flex-start;
   justify-content: center;
-  gap: 2px;
+  gap: 5px;
 }
 
-.player-name,
-.score-value {
+.player-name {
   color: #00ff00;
-  font-size: 8px;
+  font-size: 12px;
   font-family: 'Press Start 2P', monospace;
-  text-shadow: 0 0 4px #00ff00;
+  text-shadow: 0 0 5px #00ff00;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  text-align: left; /* Changed from center to left */
-  line-height: 1;
+  text-align: left;
+  line-height: 1.2;
   margin: 0;
   padding: 0;
+  letter-spacing: 1px;
 }
 
-/* Remove any potential inherited margins/padding */
-.score-inner > * {
+.score-value {
+  color: #00ff00;
+  font-size: 14px;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 0 0 5px #00ff00;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left;
+  line-height: 1.2;
   margin: 0;
   padding: 0;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+/* Add corner decorations */
+.game-screen::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(45deg, transparent, #00ff00);
+  top: 0;
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  opacity: 0.5;
+  animation: cornerGlow 2s ease infinite;
+}
+
+.game-screen::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(45deg, transparent, #00ff00);
+  bottom: 0;
+  right: 0;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  opacity: 0.5;
+  animation: cornerGlow 2s ease infinite;
+}
+
+@keyframes cornerGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
 }
 
 /* Game Over/Win screens */
@@ -189,39 +311,20 @@
 }
 
 .difficulty-indicator {
-  position: absolute;
-  top: 20px;
-  left: 20px;
   padding: 10px 20px;
   background: rgba(0, 255, 0, 0.2);
   border: 2px solid #00ff00;
   color: #00ff00;
   font-family: 'Press Start 2P', monospace;
-  font-size: 1rem;
+  font-size: 0.8rem;
   border-radius: 5px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.05); }
   100% { transform: scale(1); }
-}
-
-.loading {
-  color: #00ff00;
-  font-size: 2rem;
-  font-family: 'Press Start 2P', monospace;
-  text-align: center;
-  padding: 2rem;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  border: 2px solid #00ff00;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
 }
 
 .game-won-content h1 {
@@ -240,13 +343,19 @@
 }
 
 .progress-indicator {
-  padding: 10px 20px;
-  background: rgba(0, 255, 0, 0.2);
+  width: 200px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.5);
   border: 2px solid #00ff00;
-  color: #00ff00;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.8rem;
   border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #00ff00;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px #00ff00;
 }
 
 @keyframes bounce {
@@ -326,4 +435,109 @@
 }
 
 /* Add this to the head of your HTML file to import the font */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Streak counter */
+.streak-counter {
+  padding: 10px 20px;
+  background: rgba(0, 255, 0, 0.2);
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  animation: pulse 2s infinite;
+}
+
+/* Focus states */
+.option:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px rgba(0, 255, 0, 0.5),
+    0 0 20px rgba(0, 255, 0, 0.8);
+  transform: scale(1.02);
+}
+
+.reset-button:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px rgba(0, 255, 0, 0.5),
+    0 0 20px rgba(0, 255, 0, 0.8);
+  transform: scale(1.05);
+}
+
+/* Loading state */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #00ff00;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Game over/win screen enhancements */
+.game-over-content,
+.game-won-content {
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #00ff00;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 0, 0.3),
+    inset 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.game-over-content p,
+.game-won-content p {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+.reset-button {
+  margin-top: 1.5rem;
+  padding: 1rem 2rem;
+  background: #00ff00;
+  border: none;
+  border-radius: 5px;
+  color: #000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+} 
