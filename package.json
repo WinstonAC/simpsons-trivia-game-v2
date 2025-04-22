@@ -2,7 +2,6 @@
   "name": "simpsons-trivia-game",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://winstonac.github.io/simpsons-trivia-game-v2",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
