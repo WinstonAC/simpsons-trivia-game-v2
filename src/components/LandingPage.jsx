@@ -13,16 +13,6 @@ const LandingPage = ({ onEnter }) => {
 
   return (
     <div className="landing-container">
-      {/* Smoke effect */}
-      <div className="smoke-stacks">
-        <div className="smoke-left">
-          <div className="smoke-particle"></div>
-          <div className="smoke-particle"></div>
-          <div className="smoke-particle"></div>
-          <div className="smoke-particle"></div>
-        </div>
-      </div>
-
       <div className="content-container">
         <h1 className="title">D'OH! TRIVIA</h1>
         <form onSubmit={handleSubmit}>

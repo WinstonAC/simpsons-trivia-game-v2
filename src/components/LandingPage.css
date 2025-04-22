@@ -9,12 +9,104 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url('../Images/background_livingroom.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(to bottom, #1a472a, #0a192f);
   overflow: hidden;
-  padding: 1rem;
+}
+
+.landing-container::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://simpsons-trivia-game-v2.vercel.app/nuclear-towers.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.content-container {
+  position: relative;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 2rem;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 2;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+  min-width: 320px;
+}
+
+.title {
+  color: #00ff00;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.8rem;
+  text-align: center;
+  text-shadow: 
+    0 0 10px #00ff00,
+    0 0 20px #00ff00;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+  animation: glow 2s ease-in-out infinite;
+}
+
+form {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: center;
+}
+
+.name-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  padding: 0.8rem;
+  color: #00ff00;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  text-align: left;
+  box-shadow: 
+    0 0 10px rgba(0, 255, 0, 0.3),
+    inset 0 0 5px rgba(0, 255, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.name-input:focus {
+  outline: none;
+  box-shadow: 
+    0 0 15px rgba(0, 255, 0, 0.5),
+    inset 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.enter-button {
+  background: #00ff00;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  color: #000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+  white-space: nowrap;
+}
+
+.enter-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.enter-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Smoke effect */
@@ -30,130 +122,75 @@
 
 .smoke-left {
   position: absolute;
-  top: 50%;
-  left: 20%;
+  top: 20%;
+  left: 35%;
   transform: translate(-50%, -50%);
 }
 
 .smoke-particle {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   background: rgba(0, 255, 0, 0.1);
   border-radius: 50%;
   animation: smoke 4s ease-out infinite;
+  filter: blur(10px);
 }
+
+.smoke-particle:nth-child(1) { animation-delay: 0s; }
+.smoke-particle:nth-child(2) { animation-delay: 1s; }
+.smoke-particle:nth-child(3) { animation-delay: 2s; }
+.smoke-particle:nth-child(4) { animation-delay: 3s; }
 
 @keyframes smoke {
   0% {
-    transform: scale(0);
+    transform: scale(0) translateY(0);
     opacity: 0;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
   100% {
-    transform: scale(2);
+    transform: scale(2) translateY(-200px);
     opacity: 0;
   }
-}
-
-.content-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  z-index: 1;
-}
-
-.title {
-  color: #00ff00;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 2.5rem;
-  text-align: center;
-  text-shadow: 0 0 10px #00ff00;
-  animation: glow 2s ease-in-out infinite;
-}
-
-.name-input {
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #00ff00;
-  border-radius: 10px;
-  padding: 1rem;
-  color: #00ff00;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1rem;
-  text-align: center;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 
-    0 0 20px rgba(0, 255, 0, 0.3),
-    inset 0 0 10px rgba(0, 255, 0, 0.2);
-  transition: all 0.3s ease;
-}
-
-.name-input:focus {
-  outline: none;
-  box-shadow: 
-    0 0 30px rgba(0, 255, 0, 0.5),
-    inset 0 0 20px rgba(0, 255, 0, 0.3);
-  transform: scale(1.02);
-}
-
-.enter-button {
-  background: #00ff00;
-  border: none;
-  border-radius: 10px;
-  padding: 1rem 2rem;
-  color: #000;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-}
-
-.enter-button:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
-}
-
-.enter-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* Mobile optimizations */
 @media (max-width: 480px) {
-  .title {
-    font-size: 1.8rem;
+  .content-container {
+    min-width: 280px;
+    padding: 1.5rem;
   }
 
   .name-input {
-    font-size: 0.9rem;
-    padding: 0.8rem;
+    font-size: 0.8rem;
+    padding: 0.6rem;
   }
 
   .enter-button {
-    font-size: 0.9rem;
-    padding: 0.8rem 1.5rem;
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
   }
 }
 
 /* Tablet optimizations */
 @media (min-width: 481px) and (max-width: 1024px) {
-  .title {
-    font-size: 2.2rem;
+  .content-container {
+    min-width: 300px;
   }
 }
 
 @keyframes glow {
   0%, 100% {
-    text-shadow: 0 0 10px #00ff00;
+    text-shadow: 
+      0 0 10px #00ff00,
+      0 0 20px #00ff00;
   }
   50% {
-    text-shadow: 0 0 20px #00ff00;
+    text-shadow: 
+      0 0 15px #00ff00,
+      0 0 30px #00ff00;
   }
 }
 
