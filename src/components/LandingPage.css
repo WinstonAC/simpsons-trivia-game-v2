@@ -9,211 +9,213 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, #1a472a, #0a192f);
+  background: #FED41D; /* Simpsons yellow */
   overflow: hidden;
-}
-
-.landing-container::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://simpsons-trivia-game-v2.vercel.app/nuclear-towers.png');
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  opacity: 0.7;
-  z-index: 1;
+  padding: 1rem;
 }
 
 .content-container {
   position: relative;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.85);
   padding: 2rem;
-  border-radius: 25px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  z-index: 2;
-  box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
-  min-width: 320px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
 }
 
 .title {
   color: #00ff00;
   font-family: 'Press Start 2P', monospace;
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   text-align: center;
   text-shadow: 
     0 0 10px #00ff00,
-    0 0 20px #00ff00;
-  margin-bottom: 1rem;
+    0 0 20px #00ff00,
+    0 0 30px #00ff00;
   letter-spacing: 2px;
+  margin: 0;
   animation: glow 2s ease-in-out infinite;
 }
 
+/* Corner donuts */
+.corner-donut {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  animation: spinCounterClockwise 8s linear infinite;
+  mix-blend-mode: darken;
+}
+
+.corner-donut img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: darken;
+}
+
+/* Corner positions */
+.corner-donut.top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.corner-donut.top-right {
+  top: 20px;
+  right: 20px;
+}
+
+.corner-donut.bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.corner-donut.bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+
+@keyframes spinCounterClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Form styles */
 form {
   display: flex;
-  gap: 0.5rem;
-  width: 100%;
+  flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 400px;
 }
 
 .name-input {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #00ff00;
-  border-radius: 8px;
+  width: 100%;
+  background: #e0e0e0;
+  border: 2px solid #808080;
+  border-radius: 0;
   padding: 0.8rem;
-  color: #00ff00;
+  color: #333;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.9rem;
-  text-align: left;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  text-align: center;
   box-shadow: 
-    0 0 10px rgba(0, 255, 0, 0.3),
-    inset 0 0 5px rgba(0, 255, 0, 0.2);
-  transition: all 0.3s ease;
+    inset 0 0 0 2px #fff,
+    inset 3px 3px 3px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.name-input:focus {
-  outline: none;
-  box-shadow: 
-    0 0 15px rgba(0, 255, 0, 0.5),
-    inset 0 0 10px rgba(0, 255, 0, 0.3);
+.name-input::placeholder {
+  color: #666;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
 }
 
 .enter-button {
-  background: #00ff00;
+  background: #8B0000;
   border: none;
-  border-radius: 8px;
-  padding: 0.8rem 1.5rem;
-  color: #000;
+  border-radius: 0;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
+  color: #fff;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-  white-space: nowrap;
+  text-transform: uppercase;
+  box-shadow: 
+    0 4px 0 #4d0000,
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .enter-button:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  background: #990000;
+  transform: translateY(2px);
+  box-shadow: 
+    0 2px 0 #4d0000,
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .enter-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* Smoke effect */
-.smoke-stacks {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.smoke-left {
-  position: absolute;
-  top: 20%;
-  left: 35%;
-  transform: translate(-50%, -50%);
-}
-
-.smoke-particle {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  background: rgba(0, 255, 0, 0.1);
-  border-radius: 50%;
-  animation: smoke 4s ease-out infinite;
-  filter: blur(10px);
-}
-
-.smoke-particle:nth-child(1) { animation-delay: 0s; }
-.smoke-particle:nth-child(2) { animation-delay: 1s; }
-.smoke-particle:nth-child(3) { animation-delay: 2s; }
-.smoke-particle:nth-child(4) { animation-delay: 3s; }
-
-@keyframes smoke {
-  0% {
-    transform: scale(0) translateY(0);
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(2) translateY(-200px);
-    opacity: 0;
-  }
-}
-
-/* Mobile optimizations */
-@media (max-width: 480px) {
-  .content-container {
-    min-width: 280px;
-    padding: 1.5rem;
-  }
-
-  .name-input {
-    font-size: 0.8rem;
-    padding: 0.6rem;
-  }
-
-  .enter-button {
-    font-size: 0.8rem;
-    padding: 0.6rem 1rem;
-  }
-}
-
-/* Tablet optimizations */
-@media (min-width: 481px) and (max-width: 1024px) {
-  .content-container {
-    min-width: 300px;
-  }
+  background: #666;
+  box-shadow: none;
 }
 
 @keyframes glow {
   0%, 100% {
     text-shadow: 
       0 0 10px #00ff00,
-      0 0 20px #00ff00;
+      0 0 20px #00ff00,
+      0 0 30px #00ff00;
   }
   50% {
     text-shadow: 
       0 0 15px #00ff00,
-      0 0 30px #00ff00;
+      0 0 25px #00ff00,
+      0 0 35px #00ff00;
   }
 }
 
-/* Tablet (768px) */
-@media (min-width: 768px) {
-  .title {
-    font-size: 2.5rem;
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .landing-container {
+    padding: 0.5rem;
   }
 
-  .name-input,
-  .enter-button {
-    font-size: 1.2rem;
-    padding: 1rem;
-  }
-}
-
-/* Desktop (1024px) */
-@media (min-width: 1024px) {
   .content-container {
-    padding: 2rem;
+    padding: 1.5rem;
+    width: 95%;
   }
 
-  .title {
-    font-size: 3rem;
+  .name-input {
+    padding: 0.7rem;
+    margin-bottom: 0.8rem;
   }
-} 
+
+  .enter-button {
+    min-height: 44px; /* Minimum touch target size */
+    width: 100%; /* Full width on mobile */
+    max-width: 200px;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .content-container {
+    padding: 1.8rem;
+    width: 85%;
+  }
+
+  .enter-button {
+    min-width: 180px;
+  }
+}
+
+/* Safe area insets for modern mobile devices */
+@supports (padding: max(0px)) {
+  .landing-container {
+    padding: max(1rem, env(safe-area-inset-top))
+             max(1rem, env(safe-area-inset-right))
+             max(1rem, env(safe-area-inset-bottom))
+             max(1rem, env(safe-area-inset-left));
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .name-input {
+    font-size: 16px;
+  }
+}

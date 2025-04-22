@@ -1,41 +1,42 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import LandingPage from './components/LandingPage';
 import GameScreen from './components/GameScreen';
 import { triviaQuestions } from './data/questions';
 
 const App = () => {
-  const [gameStarted, setGameStarted] = useState(false);
   const [playerName, setPlayerName] = useState('');
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
 
   const handleGameStart = (name) => {
     setPlayerName(name);
-    setGameStarted(true);
-  };
-
-  const handleAnswer = (selectedAnswer) => {
-    if (selectedAnswer === triviaQuestions[currentQuestionIndex].correctAnswer) {
-      setScore(prevScore => prevScore + 1);
-    }
-    setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
 
   return (
-    <div className="App">
-      {!gameStarted ? (
-        <LandingPage onEnter={handleGameStart} />
-      ) : (
-        <GameScreen
-          question={triviaQuestions[currentQuestionIndex].question}
-          options={triviaQuestions[currentQuestionIndex].options}
-          score={score}
-          playerName={playerName}
-          onAnswerClick={handleAnswer}
-        />
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route 
+            path="/" 
+            element={<LandingPage onEnter={handleGameStart} />} 
+          />
+          <Route 
+            path="/game" 
+            element={
+              playerName ? (
+                <GameScreen 
+                  playerName={playerName}
+                  onGameOver={() => setPlayerName('')}
+                  onGameWon={() => setPlayerName('')}
+                />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            } 
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

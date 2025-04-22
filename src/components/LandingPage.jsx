@@ -1,18 +1,36 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import donutImage from '../Images/doughnut.png';
 import './LandingPage.css';
 
 const LandingPage = ({ onEnter }) => {
   const [playerName, setPlayerName] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (playerName.trim()) {
       onEnter(playerName.trim());
+      navigate('/game');
     }
   };
 
   return (
     <div className="landing-container">
+      {/* Corner Donuts */}
+      <div className="corner-donut top-left">
+        <img src={donutImage} alt="" />
+      </div>
+      <div className="corner-donut top-right">
+        <img src={donutImage} alt="" />
+      </div>
+      <div className="corner-donut bottom-left">
+        <img src={donutImage} alt="" />
+      </div>
+      <div className="corner-donut bottom-right">
+        <img src={donutImage} alt="" />
+      </div>
+
       <div className="content-container">
         <h1 className="title">D'OH! TRIVIA</h1>
         <form onSubmit={handleSubmit}>
@@ -37,4 +55,4 @@ const LandingPage = ({ onEnter }) => {
   );
 };
 
-export default LandingPage; 
+export default LandingPage;

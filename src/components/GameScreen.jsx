@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import './GameScreen.css';
 import { useGameEngine } from '../hooks/useGameEngine';
 import Timer from './Timer';
+import { useNavigate } from 'react-router-dom';
 
-const GameScreen = ({ playerName }) => {
+const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
   const {
     currentLevel,
     correctAnswers,
@@ -22,6 +23,7 @@ const GameScreen = ({ playerName }) => {
   const optionsRef = useRef([]);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Focus first option when question changes
@@ -145,6 +147,13 @@ const GameScreen = ({ playerName }) => {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <button 
+        className="exit-button"
+        onClick={() => navigate('/')}
+        title="Exit Game"
+      >
+        ✕
+      </button>
       <Timer 
         initialTime={30}
         onTimeUp={handleTimeUp}
