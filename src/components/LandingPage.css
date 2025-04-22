@@ -25,10 +25,8 @@
   gap: 1.5rem;
   width: 90%;
   max-width: 500px;
-  box-shadow: 
-    0 0 40px rgba(0, 0, 0, 0.5),
-    inset 0 0 20px rgba(0, 255, 0, 0.1);
-  border: 2px solid rgba(0, 255, 0, 0.3);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(0, 255, 0, 0.2);
 }
 
 .title {
@@ -36,15 +34,10 @@
   font-family: 'Press Start 2P', monospace;
   font-size: clamp(1.8rem, 5vw, 2.5rem);
   text-align: center;
-  text-shadow: 
-    0 0 10px #00ff00,
-    0 0 20px #00ff00,
-    0 0 30px #00ff00,
-    2px 2px 2px rgba(0, 0, 0, 0.8);
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
   letter-spacing: 2px;
   margin: 0;
-  animation: titleGlow 2s ease-in-out infinite;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   padding: 1rem;
   border-radius: 8px;
 }
@@ -114,33 +107,26 @@ form {
   font-family: 'Press Start 2P', monospace;
   font-size: clamp(0.8rem, 2.5vw, 1rem);
   text-align: center;
-  box-shadow: 
-    0 0 10px rgba(0, 255, 0, 0.5),
-    inset 0 0 10px rgba(0, 255, 0, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
   margin-bottom: 1.5rem;
   -webkit-appearance: none;
   appearance: none;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: 0 0 5px #00ff00;
 }
 
 .name-input::placeholder {
-  color: rgba(0, 255, 0, 0.5);
+  color: rgba(0, 255, 0, 0.4);
   font-size: clamp(0.7rem, 2vw, 0.9rem);
   opacity: 0.8;
-  text-shadow: none;
 }
 
 .name-input:focus {
   outline: none;
   border-color: #00ff00;
   box-shadow: 
-    0 0 20px rgba(0, 255, 0, 0.7),
-    inset 0 0 15px rgba(0, 255, 0, 0.5);
-  text-shadow: 
-    0 0 5px #00ff00,
-    0 0 10px #00ff00;
+    0 0 5px rgba(0, 255, 0, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .enter-button {
@@ -154,37 +140,21 @@ form {
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  box-shadow: 
-    0 0 10px rgba(0, 255, 0, 0.5),
-    inset 0 0 10px rgba(0, 255, 0, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  text-shadow: 
-    0 0 5px #00ff00,
-    0 0 10px #00ff00;
-  letter-spacing: 1px;
-  font-weight: bold;
 }
 
 .enter-button:hover:not(:disabled) {
-  background: rgba(0, 255, 0, 0.2);
-  box-shadow: 
-    0 0 20px rgba(0, 255, 0, 0.7),
-    inset 0 0 15px rgba(0, 255, 0, 0.5);
-  text-shadow: 
-    0 0 5px #00ff00,
-    0 0 10px #00ff00,
-    0 0 15px #00ff00;
+  background: rgba(0, 255, 0, 0.1);
   transform: scale(1.02);
 }
 
 .enter-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  box-shadow: none;
   border-color: #666;
   color: #666;
-  text-shadow: none;
 }
 
 /* Mobile optimizations */
