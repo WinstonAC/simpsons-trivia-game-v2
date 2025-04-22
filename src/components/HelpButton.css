@@ -1,13 +1,13 @@
 .help-button {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: max(env(safe-area-inset-top), 20px);
+  right: max(env(safe-area-inset-right), 20px);
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.9);
-  border: 2px solid #00ff00;
-  color: #00ff00;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid var(--primary-green, #1a9f1a);
+  color: var(--primary-green, #1a9f1a);
   font-size: 24px;
   font-family: 'Press Start 2P', monospace;
   display: flex;
@@ -17,39 +17,43 @@
   transition: all 0.3s ease;
   z-index: 1000;
   box-shadow: 
-    0 0 10px rgba(0, 255, 0, 0.3),
-    inset 0 0 10px rgba(0, 255, 0, 0.2);
+    0 0 10px rgba(26, 159, 26, 0.3),
+    inset 0 0 10px rgba(26, 159, 26, 0.2);
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .help-button:hover {
   transform: scale(1.1);
   box-shadow: 
-    0 0 20px rgba(0, 255, 0, 0.5),
-    inset 0 0 15px rgba(0, 255, 0, 0.3);
+    0 0 20px rgba(26, 159, 26, 0.5),
+    inset 0 0 15px rgba(26, 159, 26, 0.3);
 }
 
 .help-icon {
   font-size: 20px;
   line-height: 1;
-  text-shadow: 0 0 10px #00ff00;
+  text-shadow: 0 0 10px var(--primary-green, #1a9f1a);
 }
 
 /* Mobile optimizations */
 @media (max-width: 480px) {
   .help-button {
-    top: 15px;
-    right: 15px;
+    top: max(env(safe-area-inset-top), 15px);
+    right: max(env(safe-area-inset-right), 15px);
     width: 35px;
     height: 35px;
     font-size: 18px;
+    transform: scale(0.9);
+    transform-origin: top right;
   }
 }
 
 /* Ensure the button stays visible in landscape mode */
 @media (orientation: landscape) and (max-height: 500px) {
   .help-button {
-    top: 10px;
-    right: 10px;
+    top: max(env(safe-area-inset-top), 10px);
+    right: max(env(safe-area-inset-right), 10px);
+    transform: scale(0.8);
   }
 } 
