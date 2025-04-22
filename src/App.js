@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css';
 import LandingPage from './components/LandingPage';
 import GameScreen from './components/GameScreen';
 import { triviaQuestions } from './data/questions';
@@ -22,7 +23,7 @@ const App = () => {
   };
 
   return (
-    <div className="app">
+    <div className="App">
       {!gameStarted ? (
         <LandingPage onEnter={handleGameStart} />
       ) : (

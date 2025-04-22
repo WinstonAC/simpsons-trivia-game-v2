@@ -1,6 +1,6 @@
 /* Mobile-first base styles */
 .game-screen {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
@@ -15,7 +15,7 @@
   background-repeat: no-repeat;
   overflow: hidden;
   padding: 0.5rem;
-  position: relative;
+  z-index: 1;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -99,12 +99,15 @@
   font-family: 'Press Start 2P', monospace;
   transition: all 0.3s ease;
   animation: fadeIn 0.5s ease;
-  min-height: 44px; /* Minimum touch target size */
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  -webkit-tap-highlight-color: transparent;
   user-select: none;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .option:hover {

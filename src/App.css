@@ -1,13 +1,17 @@
 .App {
   text-align: center;
-  padding: 20px;
   min-height: 100vh;
-  background-color: #282c34;
-  color: #00ff00;
-  font-family: Arial, sans-serif;
+  width: 100vw;
+  background-image: url('./Images/background_livingroom.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  color: #00ff00;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
