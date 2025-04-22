@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './GameScreen.css';
 import { useGameEngine } from '../hooks/useGameEngine';
+import useSoundEffects from '../hooks/useSoundEffects';
 import Timer from './Timer';
+import Tutorial from './Tutorial';
+import HelpButton from './HelpButton';
+import SoundControl from './SoundControl';
 import { useNavigate } from 'react-router-dom';
 
 const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
+  const [showTutorial, setShowTutorial] = useState(false);
   const {
     currentLevel,
     correctAnswers,
@@ -18,6 +23,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
     currentStreak
   } = useGameEngine();
 
+  const { playSound, toggleMute, isMuted } = useSoundEffects();
   const currentQuestion = getCurrentQuestion();
   const progress = ((correctAnswers + totalIncorrect) / 10) * 100;
   const optionsRef = useRef([]);
@@ -41,13 +47,20 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
   const handleTimeUp = () => {
     if (!isAnswerSelected) {
       handleAnswer(null);
+      playSound('incorrect');
+    }
+  };
+
+  const handleAnswerSelection = (option) => {
+    if (!isAnswerSelected) {
+      handleAnswer(option);
+      playSound(option === currentQuestion.correctAnswer ? 'correct' : 'incorrect');
     }
   };
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
-    // Light vibration on touch start
     vibrate(10);
   };
 
@@ -57,18 +70,14 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
     const deltaX = touchEndX - touchStartX.current;
     const deltaY = touchEndY - touchStartY.current;
 
-    // Only handle horizontal swipes
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-      // Vibration feedback for successful swipe
       vibrate(30);
       if (deltaX > 0) {
-        // Swipe right - focus previous option
         const currentIndex = optionsRef.current.findIndex(el => document.activeElement === el);
         if (currentIndex > 0) {
           optionsRef.current[currentIndex - 1].focus();
         }
       } else {
-        // Swipe left - focus next option
         const currentIndex = optionsRef.current.findIndex(el => document.activeElement === el);
         if (currentIndex < optionsRef.current.length - 1) {
           optionsRef.current[currentIndex + 1].focus();
@@ -81,7 +90,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (!isAnswerSelected) {
-        handleAnswer(option);
+        handleAnswerSelection(option);
       }
     } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
       e.preventDefault();
@@ -95,6 +104,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
   };
 
   if (gameStatus === 'gameOver') {
+    playSound('gameOver');
     return (
       <div className="game-over" role="alert" aria-live="polite">
         <div className="game-over-content">
@@ -118,6 +128,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
   }
 
   if (gameStatus === 'won') {
+    playSound('victory');
     return (
       <div className="game-won" role="alert" aria-live="polite">
         <div className="game-won-content">
@@ -147,6 +158,11 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <HelpButton onClick={() => setShowTutorial(true)} />
+      <SoundControl isMuted={isMuted} onToggle={toggleMute} />
+      
+      {showTutorial && <Tutorial onClose={() => setShowTutorial(false)} />}
+      
       <button 
         className="exit-button"
         onClick={() => navigate('/')}
@@ -154,6 +170,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
       >
         ✕
       </button>
+      
       <Timer 
         initialTime={30}
         onTimeUp={handleTimeUp}
@@ -188,7 +205,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
                     : 'disabled'
                   : ''
               }`}
-              onClick={() => !isAnswerSelected && handleAnswer(option)}
+              onClick={() => !isAnswerSelected && handleAnswerSelection(option)}
               onKeyDown={(e) => handleKeyDown(e, option, index)}
               role="radio"
               aria-checked={isAnswerSelected && option === currentQuestion.correctAnswer}

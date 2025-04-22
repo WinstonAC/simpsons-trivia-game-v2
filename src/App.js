@@ -1,43 +1,24 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import './App.css';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingScreen from './components/LoadingScreen';
 import LandingPage from './components/LandingPage';
 import GameScreen from './components/GameScreen';
-import { triviaQuestions } from './data/questions';
+import './App.css';
 
-const App = () => {
-  const [playerName, setPlayerName] = useState('');
-
-  const handleGameStart = (name) => {
-    setPlayerName(name);
-  };
-
+function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route 
-            path="/" 
-            element={<LandingPage onEnter={handleGameStart} />} 
-          />
-          <Route 
-            path="/game" 
-            element={
-              playerName ? (
-                <GameScreen 
-                  playerName={playerName}
-                  onGameOver={() => setPlayerName('')}
-                  onGameWon={() => setPlayerName('')}
-                />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            } 
-          />
-        </Routes>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <Suspense fallback={<LoadingScreen />}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/game" element={<GameScreen />} />
+          </Routes>
+        </Suspense>
+      </Router>
+    </ErrorBoundary>
   );
-};
+}
 
 export default App;

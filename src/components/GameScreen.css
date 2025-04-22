@@ -9,7 +9,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url('../Images/background_livingroom.png');
+  background-image: url('/simpsons-background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -31,6 +31,9 @@
   border: 8px solid transparent;
   background: linear-gradient(45deg, #00ff00, #00cc00, #00ff00) border-box;
   -webkit-mask: 
+    linear-gradient(#fff 0 0) padding-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
     linear-gradient(#fff 0 0) padding-box, 
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;

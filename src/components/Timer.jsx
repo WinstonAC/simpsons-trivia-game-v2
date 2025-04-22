@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Timer.css';
 
 const Timer = ({ initialTime = 30, onTimeUp, isActive = true }) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
 
   useEffect(() => {
-    let timer;
-    if (isActive && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft(prev => prev - 1);
-      }, 1000);
-    } else if (timeLeft === 0) {
+    if (timeLeft <= 0) {
       onTimeUp();
+      return;
     }
+
+    const timer = setInterval(() => {
+      setTimeLeft(prevTime => prevTime - 1);
+    }, 1000);
+
+    // Cleanup function to clear interval when component unmounts
     return () => clearInterval(timer);
-  }, [timeLeft, isActive, onTimeUp]);
+  }, [timeLeft, onTimeUp]);
 
   useEffect(() => {
     setTimeLeft(initialTime);
