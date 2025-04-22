@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './GameScreen.css';
-import tvImage from '../Images/TV.png';
 import { useGameEngine } from '../hooks/useGameEngine';
 import Timer from './Timer';
 
@@ -21,6 +20,8 @@ const GameScreen = ({ playerName }) => {
   const currentQuestion = getCurrentQuestion();
   const progress = ((correctAnswers + totalIncorrect) / 10) * 100;
   const optionsRef = useRef([]);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
 
   useEffect(() => {
     // Focus first option when question changes
@@ -29,9 +30,48 @@ const GameScreen = ({ playerName }) => {
     }
   }, [currentQuestion, isAnswerSelected]);
 
+  const vibrate = (pattern) => {
+    if (navigator.vibrate) {
+      navigator.vibrate(pattern);
+    }
+  };
+
   const handleTimeUp = () => {
     if (!isAnswerSelected) {
       handleAnswer(null);
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    // Light vibration on touch start
+    vibrate(10);
+  };
+
+  const handleTouchEnd = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaX = touchEndX - touchStartX.current;
+    const deltaY = touchEndY - touchStartY.current;
+
+    // Only handle horizontal swipes
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      // Vibration feedback for successful swipe
+      vibrate(30);
+      if (deltaX > 0) {
+        // Swipe right - focus previous option
+        const currentIndex = optionsRef.current.findIndex(el => document.activeElement === el);
+        if (currentIndex > 0) {
+          optionsRef.current[currentIndex - 1].focus();
+        }
+      } else {
+        // Swipe left - focus next option
+        const currentIndex = optionsRef.current.findIndex(el => document.activeElement === el);
+        if (currentIndex < optionsRef.current.length - 1) {
+          optionsRef.current[currentIndex + 1].focus();
+        }
+      }
     }
   };
 
@@ -99,7 +139,12 @@ const GameScreen = ({ playerName }) => {
   }
 
   return (
-    <div className="game-screen" role="main">
+    <div 
+      className="game-screen" 
+      role="main"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <Timer 
         initialTime={30}
         onTimeUp={handleTimeUp}
@@ -152,12 +197,9 @@ const GameScreen = ({ playerName }) => {
       </div>
 
       <div className="score-display" aria-label={`Score: ${totalScore}`}>
-        <img src={tvImage} alt="Score Display" className="score-tv-frame" />
         <div className="score-content">
-          <div className="score-inner">
-            <div className="player-name">{playerName}</div>
-            <div className="score-value">Score: {totalScore}</div>
-          </div>
+          <div className="player-name">{playerName}</div>
+          <div className="score-value">Score: {totalScore}</div>
         </div>
       </div>
     </div>
