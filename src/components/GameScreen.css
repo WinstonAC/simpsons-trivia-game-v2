@@ -16,10 +16,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url('/simpsons-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #000;
   overflow: hidden;
   padding: 0.5rem;
   position: relative;
