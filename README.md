@@ -173,3 +173,4 @@ This project will feature:
 ## 🚀 Getting Started (Cursor + Local Dev)
 
 ### Web
+Last deployed: [timestamp: ${new Date().toISOString()}]
