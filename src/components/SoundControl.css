@@ -1,51 +1,28 @@
 .sound-control {
   position: fixed;
   top: 20px;
-  right: 70px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.9);
-  border: 2px solid #00ff00;
-  color: #00ff00;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  right: 20px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
   z-index: 1000;
-  box-shadow: 
-    0 0 10px rgba(0, 255, 0, 0.3),
-    inset 0 0 10px rgba(0, 255, 0, 0.2);
-  -webkit-tap-highlight-color: transparent;
 }
 
 .sound-control:hover {
-  transform: scale(1.1);
-  box-shadow: 
-    0 0 20px rgba(0, 255, 0, 0.5),
-    inset 0 0 15px rgba(0, 255, 0, 0.3);
-}
-
-.sound-control.muted {
-  background: rgba(255, 0, 0, 0.2);
-  border-color: #ff0000;
-  color: #ff0000;
-  box-shadow: 
-    0 0 10px rgba(255, 0, 0, 0.3),
-    inset 0 0 10px rgba(255, 0, 0, 0.2);
-}
-
-.sound-control.muted:hover {
-  box-shadow: 
-    0 0 20px rgba(255, 0, 0, 0.5),
-    inset 0 0 15px rgba(255, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .sound-control svg {
-  width: 24px;
-  height: 24px;
-  filter: drop-shadow(0 0 2px currentColor);
+  fill: #fff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.sound-control:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 /* Mobile optimizations */

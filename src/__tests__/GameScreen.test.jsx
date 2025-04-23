@@ -1,7 +1,21 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
 import GameScreen from '../components/GameScreen';
+import '@testing-library/jest-dom';
+
+// Mock the sound effects
+jest.mock('../assets/sounds', () => ({
+  correctSound: jest.fn(),
+  incorrectSound: jest.fn(),
+  levelUpSound: jest.fn(),
+  gameOverSound: jest.fn(),
+}));
+
+// Mock HTMLMediaElement
+window.HTMLMediaElement.prototype.play = () => Promise.resolve();
+window.HTMLMediaElement.prototype.pause = () => {};
 
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
@@ -18,9 +32,10 @@ jest.mock('../hooks/useGameEngine', () => ({
     gameStatus: 'playing',
     totalScore: 0,
     getCurrentQuestion: () => ({
-      question: 'Test Question',
-      options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
-      correctAnswer: 'Option 1'
+      question: "What is Homer's favorite food?",
+      options: ["Donuts", "Salad", "Pizza", "Tofu"],
+      correctAnswer: "Donuts",
+      difficulty: "easy"
     }),
     handleAnswer: jest.fn(),
     resetGame: jest.fn(),
@@ -38,37 +53,96 @@ const renderGameScreen = (props = {}) => {
 };
 
 describe('GameScreen Component', () => {
-  test('renders game screen with question and options', () => {
-    renderGameScreen();
-    
-    expect(screen.getByText('Test Question')).toBeInTheDocument();
-    expect(screen.getByText('Option 1')).toBeInTheDocument();
-    expect(screen.getByText('Option 2')).toBeInTheDocument();
-    expect(screen.getByText('Option 3')).toBeInTheDocument();
-    expect(screen.getByText('Option 4')).toBeInTheDocument();
+  beforeEach(() => {
+    jest.useFakeTimers();
   });
 
-  test('displays player name and score', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.clearAllMocks();
+  });
+
+  test('renders game screen with initial state', () => {
     renderGameScreen();
     
-    expect(screen.getByText('Test Player')).toBeInTheDocument();
+    expect(screen.getByText("What is Homer's favorite food?")).toBeInTheDocument();
+    expect(screen.getByText('Donuts')).toBeInTheDocument();
+    expect(screen.getByText('Salad')).toBeInTheDocument();
+    expect(screen.getByText('Pizza')).toBeInTheDocument();
+    expect(screen.getByText('Tofu')).toBeInTheDocument();
     expect(screen.getByText('Score: 0')).toBeInTheDocument();
   });
 
-  test('shows current level and streak', () => {
+  test('displays player name and game info', () => {
     renderGameScreen();
     
+    expect(screen.getByText('Test Player')).toBeInTheDocument();
     expect(screen.getByText('Level 1')).toBeInTheDocument();
     expect(screen.getByText('Streak: 0')).toBeInTheDocument();
   });
 
-  test('handles option selection', () => {
+  test('handles correct answer selection', async () => {
     renderGameScreen();
     
-    const option = screen.getByText('Option 1');
-    fireEvent.click(option);
+    const correctOption = screen.getByText('Donuts');
+    await act(async () => {
+      fireEvent.click(correctOption);
+    });
     
-    // Add assertions based on your game logic
+    await waitFor(() => {
+      expect(correctOption).toHaveClass('correct');
+    });
+  });
+
+  test('handles incorrect answer selection', async () => {
+    renderGameScreen();
+    
+    const incorrectOption = screen.getByText('Salad');
+    await act(async () => {
+      fireEvent.click(incorrectOption);
+    });
+    
+    await waitFor(() => {
+      expect(incorrectOption).toHaveClass('disabled');
+    });
+  });
+
+  test('handles timer countdown', () => {
+    renderGameScreen();
+    
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+    
+    expect(screen.getByText(/Time: \d+/)).toBeInTheDocument();
+  });
+
+  test('handles sound toggle', () => {
+    renderGameScreen();
+    
+    const soundButton = screen.getByRole('button', { name: /sound/i });
+    fireEvent.click(soundButton);
+    
+    expect(soundButton).toHaveAttribute('aria-label', 'Sound Off');
+  });
+
+  test('displays tutorial when help button is clicked', () => {
+    renderGameScreen();
+    
+    const helpButton = screen.getByRole('button', { name: /help/i });
+    fireEvent.click(helpButton);
+    
+    expect(screen.getByText(/tutorial/i)).toBeInTheDocument();
+  });
+
+  test('handles mobile touch events', () => {
+    renderGameScreen();
+    
+    const option = screen.getByText('Donuts');
+    fireEvent.touchStart(option);
+    fireEvent.touchEnd(option);
+    
+    expect(option).toHaveClass('selected');
   });
 
   test('has accessible elements', () => {

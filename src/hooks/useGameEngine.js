@@ -1,139 +1,130 @@
-import { useState, useEffect, useRef } from 'react';
-import { triviaQuestions } from '../data/triviaQuestions';
+import { useState, useEffect, useCallback } from 'react';
+import { getRandomQuestion, getQuestionsByDifficulty } from '../data/questions';
 
-// Fisher-Yates shuffle algorithm
-const shuffleArray = (array) => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
+const INITIAL_STATE = {
+  currentLevel: 1,
+  currentQuestion: null,
+  correctAnswers: 0,
+  totalIncorrect: 0,
+  gameStatus: 'playing', // 'playing', 'gameOver', 'won'
+  totalScore: 0,
+  currentStreak: 0,
+  isAnswerSelected: false,
+  usedQuestions: new Set()
+};
+
+const SCORING = {
+  easy: 100,
+  medium: 200,
+  hard: 300,
+  streakMultiplier: 1.5
+};
+
+const LEVEL_THRESHOLDS = {
+  easy: 5,
+  medium: 10,
+  hard: 15
 };
 
 export const useGameEngine = () => {
-  const [currentLevel, setCurrentLevel] = useState('easy');
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [totalIncorrect, setTotalIncorrect] = useState(0);
-  const [currentQuestions, setCurrentQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [gameStatus, setGameStatus] = useState('playing'); // 'playing', 'gameOver', 'won'
-  const [totalScore, setTotalScore] = useState(0);
-  const [isAnswerSelected, setIsAnswerSelected] = useState(false);
-  const [currentStreak, setCurrentStreak] = useState(0);
+  const [gameState, setGameState] = useState(INITIAL_STATE);
+  const [difficulty, setDifficulty] = useState('easy');
 
-  // Audio refs - update paths to match your assets directory
-  const correctSound = useRef(new Audio('/assets/sounds/cowabunga.mp3'));
-  const incorrectSound = useRef(new Audio('/assets/sounds/doh.mp3'));
-
-  // Initialize and shuffle questions for each level
-  useEffect(() => {
-    const questions = shuffleArray(triviaQuestions[currentLevel]);
-    setCurrentQuestions(questions);
-    setCurrentQuestionIndex(0);
-  }, [currentLevel]);
-
-  // Reset sounds when component unmounts
-  useEffect(() => {
-    return () => {
-      correctSound.current.pause();
-      incorrectSound.current.pause();
-      correctSound.current.currentTime = 0;
-      incorrectSound.current.currentTime = 0;
-    };
+  const getDifficultyForLevel = useCallback((level) => {
+    if (level <= LEVEL_THRESHOLDS.easy) return 'easy';
+    if (level <= LEVEL_THRESHOLDS.medium) return 'medium';
+    return 'hard';
   }, []);
 
-  const handleAnswer = async (selectedAnswer) => {
-    if (gameStatus !== 'playing' || isAnswerSelected) return;
+  const calculateScore = useCallback((baseScore, streak) => {
+    return Math.floor(baseScore * (1 + (streak * 0.1)));
+  }, []);
 
-    setIsAnswerSelected(true);
-    const isCorrect = selectedAnswer === currentQuestions[currentQuestionIndex].correctAnswer;
+  const getNextQuestion = useCallback(() => {
+    const availableQuestions = getQuestionsByDifficulty(difficulty);
+    const unusedQuestions = availableQuestions.filter(
+      q => !gameState.usedQuestions.has(q.question)
+    );
 
-    // Play sound effect
-    try {
-      if (isCorrect) {
-        correctSound.current.currentTime = 0;
-        await correctSound.current.play();
-      } else {
-        incorrectSound.current.currentTime = 0;
-        await incorrectSound.current.play();
-      }
-    } catch (error) {
-      console.error('Error playing sound:', error);
+    if (unusedQuestions.length === 0) {
+      // Reset used questions if we've used them all
+      setGameState(prev => ({
+        ...prev,
+        usedQuestions: new Set()
+      }));
+      return getRandomQuestion(difficulty);
     }
 
-    if (isCorrect) {
-      setCorrectAnswers(prev => prev + 1);
-      setTotalScore(prev => prev + 1);
-    } else {
-      setTotalIncorrect(prev => prev + 1);
-    }
+    const question = unusedQuestions[Math.floor(Math.random() * unusedQuestions.length)];
+    setGameState(prev => ({
+      ...prev,
+      usedQuestions: new Set([...prev.usedQuestions, question.question])
+    }));
+    return question;
+  }, [difficulty, gameState.usedQuestions]);
 
-    // Check game over condition
-    if (!isCorrect && totalIncorrect + 1 >= 5) {
-      setGameStatus('gameOver');
-      return;
-    }
+  const handleAnswer = useCallback((selectedAnswer) => {
+    if (gameState.isAnswerSelected) return;
 
-    // Check level progression
-    if (isCorrect && correctAnswers + 1 >= 5) {
-      if (currentLevel === 'easy') {
-        setTimeout(() => {
-          setCurrentLevel('medium');
-          setCorrectAnswers(0);
-          setIsAnswerSelected(false);
-        }, 1000);
-      } else if (currentLevel === 'medium') {
-        setTimeout(() => {
-          setCurrentLevel('hard');
-          setCorrectAnswers(0);
-          setIsAnswerSelected(false);
-        }, 1000);
-      } else if (currentLevel === 'hard') {
-        setGameStatus('won');
-      }
-    } else {
-      // Move to next question after a delay
-      setTimeout(() => {
-        setCurrentQuestionIndex(prev => (prev + 1) % currentQuestions.length);
-        setIsAnswerSelected(false);
-      }, 1000);
-    }
-  };
+    const isCorrect = selectedAnswer === gameState.currentQuestion.correctAnswer;
+    const newStreak = isCorrect ? gameState.currentStreak + 1 : 0;
+    const baseScore = SCORING[difficulty];
+    const scoreToAdd = isCorrect ? calculateScore(baseScore, newStreak) : 0;
 
-  const getCurrentQuestion = () => {
-    const question = currentQuestions[currentQuestionIndex];
-    if (!question) return null;
+    setGameState(prev => ({
+      ...prev,
+      isAnswerSelected: true,
+      correctAnswers: isCorrect ? prev.correctAnswers + 1 : prev.correctAnswers,
+      totalIncorrect: isCorrect ? prev.totalIncorrect : prev.totalIncorrect + 1,
+      totalScore: prev.totalScore + scoreToAdd,
+      currentStreak: newStreak
+    }));
+
+    // Check if game is won
+    if (gameState.currentLevel >= LEVEL_THRESHOLDS.hard) {
+      setGameState(prev => ({
+        ...prev,
+        gameStatus: 'won'
+      }));
+    }
+  }, [gameState.currentQuestion, gameState.isAnswerSelected, gameState.currentStreak, gameState.currentLevel, difficulty, calculateScore]);
+
+  const nextQuestion = useCallback(() => {
+    if (gameState.gameStatus !== 'playing') return;
+
+    const newLevel = gameState.currentLevel + 1;
+    const newDifficulty = getDifficultyForLevel(newLevel);
     
-    // Shuffle options but keep track of the correct answer
-    const correctAnswer = question.correctAnswer;
-    const shuffledOptions = shuffleArray([...question.options]);
-    
-    return {
-      ...question,
-      options: shuffledOptions,
-      correctAnswer // Keep the original correct answer
-    };
-  };
+    setDifficulty(newDifficulty);
+    setGameState(prev => ({
+      ...prev,
+      currentLevel: newLevel,
+      currentQuestion: getNextQuestion(),
+      isAnswerSelected: false
+    }));
+  }, [gameState.gameStatus, gameState.currentLevel, getDifficultyForLevel, getNextQuestion]);
 
-  const resetGame = () => {
-    setCurrentLevel('easy');
-    setCorrectAnswers(0);
-    setTotalIncorrect(0);
-    setCurrentQuestionIndex(0);
-    setGameStatus('playing');
-    setTotalScore(0);
-  };
+  const resetGame = useCallback(() => {
+    setGameState(INITIAL_STATE);
+    setDifficulty('easy');
+  }, []);
+
+  // Initialize first question
+  useEffect(() => {
+    if (!gameState.currentQuestion && gameState.gameStatus === 'playing') {
+      setGameState(prev => ({
+        ...prev,
+        currentQuestion: getNextQuestion()
+      }));
+    }
+  }, [gameState.currentQuestion, gameState.gameStatus, getNextQuestion]);
 
   return {
-    currentLevel,
-    correctAnswers,
-    totalIncorrect,
-    gameStatus,
-    totalScore,
-    getCurrentQuestion,
+    ...gameState,
+    difficulty,
     handleAnswer,
+    nextQuestion,
     resetGame,
-    isAnswerSelected
+    getCurrentQuestion: () => gameState.currentQuestion
   };
 }; 

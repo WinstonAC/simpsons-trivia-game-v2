@@ -7,6 +7,7 @@ import Tutorial from './Tutorial';
 import HelpButton from './HelpButton';
 import SoundControl from './SoundControl';
 import { useNavigate } from 'react-router-dom';
+import GameOverScreen from './GameOverScreen';
 
 const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
   const [showTutorial, setShowTutorial] = useState(false);
@@ -20,7 +21,8 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
     handleAnswer,
     resetGame,
     isAnswerSelected,
-    currentStreak
+    currentStreak,
+    nextQuestion
   } = useGameEngine();
 
   const { playSound, toggleMute, isMuted } = useSoundEffects();
@@ -37,6 +39,15 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
       optionsRef.current[0].focus();
     }
   }, [currentQuestion, isAnswerSelected]);
+
+  useEffect(() => {
+    if (isAnswerSelected) {
+      const timer = setTimeout(() => {
+        nextQuestion();
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [isAnswerSelected, nextQuestion]);
 
   const vibrate = (pattern) => {
     if (navigator.vibrate) {
@@ -103,51 +114,14 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
     }
   };
 
-  if (gameStatus === 'gameOver') {
-    playSound('gameOver');
+  if (gameStatus !== 'playing') {
     return (
-      <div className="game-over" role="alert" aria-live="polite">
-        <div className="game-over-content">
-          <h1>D'OH!</h1>
-          <p>Game Over, {playerName}!</p>
-          <p>You made it to the {currentLevel} level!</p>
-          <p>Final Score: {totalScore}</p>
-          <p>Correct Answers: {correctAnswers}</p>
-          <p>Incorrect Answers: {totalIncorrect}</p>
-          <p>Longest Streak: {currentStreak}</p>
-          <button 
-            onClick={resetGame}
-            aria-label="Play Again"
-            className="reset-button"
-          >
-            Play Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (gameStatus === 'won') {
-    playSound('victory');
-    return (
-      <div className="game-won" role="alert" aria-live="polite">
-        <div className="game-won-content">
-          <h1>WOO HOO!</h1>
-          <p>Congratulations, {playerName}!</p>
-          <p>You've mastered all levels!</p>
-          <p>Final Score: {totalScore}</p>
-          <p>Correct Answers: {correctAnswers}</p>
-          <p>Incorrect Answers: {totalIncorrect}</p>
-          <p>Longest Streak: {currentStreak}</p>
-          <button 
-            onClick={resetGame}
-            aria-label="Play Again"
-            className="reset-button"
-          >
-            Play Again
-          </button>
-        </div>
-      </div>
+      <GameOverScreen
+        score={totalScore}
+        correctAnswers={correctAnswers}
+        totalIncorrect={totalIncorrect}
+        isWin={gameStatus === 'won'}
+      />
     );
   }
 

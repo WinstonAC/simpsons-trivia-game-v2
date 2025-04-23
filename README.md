@@ -174,3 +174,64 @@ This project will feature:
 
 ### Web
 Last deployed: [timestamp: ${new Date().toISOString()}]
+
+## 🧪 Testing
+
+### Running Tests
+
+```bash
+# Run all tests with coverage report
+npm test
+
+# Run tests in watch mode (useful during development)
+npm run test:watch
+```
+
+### Test Coverage
+
+The project maintains a minimum test coverage threshold of 80% for:
+- Branches
+- Functions
+- Lines
+- Statements
+
+Coverage reports are generated in the `coverage` directory after running tests.
+
+### Writing Tests
+
+When contributing new features, please ensure:
+1. Tests are written for all new components and utilities
+2. Test coverage meets or exceeds the minimum threshold
+3. Tests follow the established patterns in existing test files
+
+#### Test Structure
+
+Tests are organized in the `src/__tests__` directory, mirroring the structure of the source code:
+- Component tests: `src/__tests__/ComponentName.test.js`
+- Utility tests: `src/__tests__/utilityName.test.js`
+
+#### Testing Guidelines
+
+1. **Component Tests**
+   - Test all user interactions
+   - Verify correct rendering of props
+   - Test edge cases and error states
+   - Mock external dependencies
+
+2. **Utility Tests**
+   - Test all exported functions
+   - Cover edge cases
+   - Verify correct input/output handling
+
+3. **Integration Tests**
+   - Test component interactions
+   - Verify state management
+   - Test routing and navigation
+
+### Testing Tools
+
+The project uses:
+- Jest for test running and assertions
+- React Testing Library for component testing
+- Jest DOM for DOM-specific assertions
+- User Event for simulating user interactions
