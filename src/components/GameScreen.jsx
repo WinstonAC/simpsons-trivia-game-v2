@@ -6,11 +6,12 @@ import Timer from './Timer';
 import Tutorial from './Tutorial';
 import HelpButton from './HelpButton';
 import SoundControl from './SoundControl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import GameOverScreen from './GameOverScreen';
 
-const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
+const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = () => {} }) => {
   const [showTutorial, setShowTutorial] = useState(false);
+  const [currentPlayerName, setCurrentPlayerName] = useState(playerName);
   const {
     currentLevel,
     correctAnswers,
@@ -32,6 +33,14 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get player name from location state if available
+  useEffect(() => {
+    if (location.state?.playerName) {
+      setCurrentPlayerName(location.state.playerName);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     // Focus first option when question changes
@@ -199,7 +208,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
 
       <div className="score-display" aria-label={`Score: ${totalScore}, Incorrect Answers: ${totalIncorrect}`}>
         <div className="score-content">
-          <div className="player-name">{playerName}</div>
+          <div className="player-name">{currentPlayerName}</div>
           <div className="score-value">Score: {totalScore}</div>
           <div className="incorrect-count">Incorrect: {totalIncorrect}</div>
         </div>

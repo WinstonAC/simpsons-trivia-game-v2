@@ -14,8 +14,8 @@ const LandingPage = ({ onEnter }) => {
     try {
       // Store the player name in localStorage
       localStorage.setItem('playerName', playerName.trim());
-      // Navigate to the game page
-      navigate('/game');
+      // Navigate to the game page with player name in state
+      navigate('/game', { state: { playerName: playerName.trim() } });
     } catch (error) {
       console.error('Error during form submission:', error);
     }
