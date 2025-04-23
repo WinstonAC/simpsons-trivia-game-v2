@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import donutImage from '../Images/doughnut.png';
+import donutImage from '../images/doughnut.png';
 import './LandingPage.css';
 
 const LandingPage = ({ onEnter }) => {
