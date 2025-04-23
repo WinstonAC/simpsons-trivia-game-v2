@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Timer.css';
 
-const Timer = ({ initialTime = 30, onTimeUp, isActive = true }) => {
+const Timer = ({ initialTime = 30, onTimeUp, isActive = true, key }) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
 
   useEffect(() => {
@@ -10,17 +10,20 @@ const Timer = ({ initialTime = 30, onTimeUp, isActive = true }) => {
       return;
     }
 
+    if (!isActive) return;
+
     const timer = setInterval(() => {
       setTimeLeft(prevTime => prevTime - 1);
     }, 1000);
 
     // Cleanup function to clear interval when component unmounts
     return () => clearInterval(timer);
-  }, [timeLeft, onTimeUp]);
+  }, [timeLeft, onTimeUp, isActive]);
 
+  // Reset timer when key changes
   useEffect(() => {
     setTimeLeft(initialTime);
-  }, [initialTime]);
+  }, [key, initialTime]);
 
   const getTimeColor = () => {
     if (timeLeft <= 5) return '#ff0000';

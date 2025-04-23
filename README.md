@@ -235,3 +235,22 @@ The project uses:
 - React Testing Library for component testing
 - Jest DOM for DOM-specific assertions
 - User Event for simulating user interactions
+
+## Features
+
+- Multiple choice trivia questions about The Simpsons
+- Score tracking including correct and incorrect answers
+- Sound effects for correct/incorrect answers
+- Streak tracking for consecutive correct answers
+- Level progression system
+- Sound control toggle
+- Responsive design
+- Accessibility features
+
+## Gameplay
+
+- Answer questions correctly to earn points
+- Maintain streaks for bonus points
+- Track your progress with the level system
+- Monitor your performance with the score display showing both correct and incorrect answers
+- Toggle sound effects on/off as needed

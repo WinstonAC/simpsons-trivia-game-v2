@@ -149,6 +149,7 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
         initialTime={30}
         onTimeUp={handleTimeUp}
         isActive={!isAnswerSelected}
+        key={currentLevel}
       />
       
       <div className="game-info">
@@ -196,10 +197,11 @@ const GameScreen = ({ playerName, onGameOver, onGameWon }) => {
         </div>
       </div>
 
-      <div className="score-display" aria-label={`Score: ${totalScore}`}>
+      <div className="score-display" aria-label={`Score: ${totalScore}, Incorrect Answers: ${totalIncorrect}`}>
         <div className="score-content">
           <div className="player-name">{playerName}</div>
           <div className="score-value">Score: {totalScore}</div>
+          <div className="incorrect-count">Incorrect: {totalIncorrect}</div>
         </div>
       </div>
     </div>
