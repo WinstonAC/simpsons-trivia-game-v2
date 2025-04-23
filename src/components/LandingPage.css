@@ -96,11 +96,12 @@ form {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 400px;
+  gap: 1rem;
 }
 
 .name-input {
   width: 100%;
+  max-width: 300px;
   background: #000000;
   border: 2px solid #00ff00;
   border-radius: 4px;
@@ -110,7 +111,6 @@ form {
   font-size: clamp(0.8rem, 2.5vw, 1rem);
   text-align: center;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-  margin-bottom: 1.5rem;
   -webkit-appearance: none;
   appearance: none;
   text-transform: uppercase;
@@ -161,17 +161,23 @@ form {
 
 /* Mobile optimizations */
 @media (max-width: 480px) {
-  .landing-container {
-    padding: max(env(safe-area-inset-top), 0.5rem) 
-            max(env(safe-area-inset-right), 0.5rem)
-            max(env(safe-area-inset-bottom), 0.5rem)
-            max(env(safe-area-inset-left), 0.5rem);
+  .content-container {
+    padding: 1.5rem;
+    width: 85%;
+    margin: 0 auto;
   }
 
-  .content-container {
-    padding: 1.2rem;
-    width: 92%;
-    margin: 0 auto;
+  .name-input {
+    padding: 0.8rem;
+    font-size: 1rem;
+    width: 90%;
+  }
+
+  .enter-button {
+    min-height: 44px;
+    width: 90%;
+    max-width: 200px;
+    margin-top: 0.5rem;
   }
 
   .corner-donut {
@@ -183,17 +189,6 @@ form {
   .corner-donut.top-right { top: max(env(safe-area-inset-top), 10px); right: max(env(safe-area-inset-right), 10px); }
   .corner-donut.bottom-left { bottom: max(env(safe-area-inset-bottom), 10px); left: max(env(safe-area-inset-left), 10px); }
   .corner-donut.bottom-right { bottom: max(env(safe-area-inset-bottom), 10px); right: max(env(safe-area-inset-right), 10px); }
-
-  .name-input {
-    padding: 0.8rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .enter-button {
-    min-height: 44px;
-    width: 100%;
-    max-width: 200px;
-  }
 
   .title {
     font-size: 1.5rem;

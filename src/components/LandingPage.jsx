@@ -7,11 +7,17 @@ const LandingPage = ({ onEnter }) => {
   const [playerName, setPlayerName] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (playerName.trim()) {
-      onEnter(playerName.trim());
+    if (!playerName.trim()) return;
+
+    try {
+      // Store the player name in localStorage
+      localStorage.setItem('playerName', playerName.trim());
+      // Navigate to the game page
       navigate('/game');
+    } catch (error) {
+      console.error('Error during form submission:', error);
     }
   };
 
