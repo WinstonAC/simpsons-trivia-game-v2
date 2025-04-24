@@ -8,6 +8,7 @@ import HelpButton from './HelpButton';
 import SoundControl from './SoundControl';
 import { useNavigate, useLocation } from 'react-router-dom';
 import GameOverScreen from './GameOverScreen';
+import { soundManager } from '../utils/soundEffects';
 
 const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = () => {} }) => {
   const [showTutorial, setShowTutorial] = useState(false);
@@ -23,12 +24,18 @@ const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = 
     resetGame,
     isAnswerSelected,
     currentStreak,
-    nextQuestion
+    nextQuestion,
+    currentQuestion,
+    score,
+    streak,
+    progress,
+    selectAnswer,
+    isGameOver,
+    timeLeft,
+    setTimeLeft
   } = useGameEngine();
 
   const { playSound, toggleMute, isMuted } = useSoundEffects();
-  const currentQuestion = getCurrentQuestion();
-  const progress = ((correctAnswers + totalIncorrect) / 10) * 100;
   const optionsRef = useRef([]);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
@@ -58,6 +65,13 @@ const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = 
     }
   }, [isAnswerSelected, nextQuestion]);
 
+  useEffect(() => {
+    if (isGameOver) {
+      soundManager.play('gameOver');
+      navigate('/game-over', { state: { score, playerName } });
+    }
+  }, [isGameOver, score, playerName, navigate]);
+
   const vibrate = (pattern) => {
     if (navigator.vibrate) {
       navigator.vibrate(pattern);
@@ -79,29 +93,21 @@ const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = 
   };
 
   const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
-    vibrate(10);
+    if (e.touches && e.touches[0]) {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+    }
   };
 
-  const handleTouchEnd = (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    const deltaX = touchEndX - touchStartX.current;
-    const deltaY = touchEndY - touchStartY.current;
+  const handleTouchEnd = (e, answer) => {
+    if (e.changedTouches && e.changedTouches[0]) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaX = touchEndX - touchStartX.current;
+      const deltaY = touchEndY - touchStartY.current;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-      vibrate(30);
-      if (deltaX > 0) {
-        const currentIndex = optionsRef.current.findIndex(el => document.activeElement === el);
-        if (currentIndex > 0) {
-          optionsRef.current[currentIndex - 1].focus();
-        }
-      } else {
-        const currentIndex = optionsRef.current.findIndex(el => document.activeElement === el);
-        if (currentIndex < optionsRef.current.length - 1) {
-          optionsRef.current[currentIndex + 1].focus();
-        }
+      if (Math.abs(deltaX) < 50 && Math.abs(deltaY) < 50) {
+        handleAnswerSelection(answer);
       }
     }
   };
@@ -121,6 +127,10 @@ const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = 
       const prevIndex = (index - 1 + currentQuestion.options.length) % currentQuestion.options.length;
       optionsRef.current[prevIndex].focus();
     }
+  };
+
+  const handleExit = () => {
+    navigate('/');
   };
 
   if (gameStatus !== 'playing') {
@@ -148,17 +158,16 @@ const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = 
       
       <button 
         className="exit-button"
-        onClick={() => navigate('/')}
+        onClick={handleExit}
         title="Exit Game"
       >
         ✕
       </button>
       
       <Timer 
+        timeLeft={timeLeft}
+        setTimeLeft={setTimeLeft}
         initialTime={30}
-        onTimeUp={handleTimeUp}
-        isActive={!isAnswerSelected}
-        key={currentLevel}
       />
       
       <div className="game-info">
@@ -199,6 +208,8 @@ const GameScreen = ({ playerName = 'Player', onGameOver = () => {}, onGameWon = 
                 cursor: isAnswerSelected ? 'default' : 'pointer',
                 opacity: isAnswerSelected && option !== currentQuestion.correctAnswer ? 0.5 : 1
               }}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={(e) => handleTouchEnd(e, option)}
             >
               {option}
             </div>
